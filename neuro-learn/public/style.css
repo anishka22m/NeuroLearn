@@ -1,0 +1,216 @@
+/* Custom Homepage Styles */
+
+
+/* adv crousal */
+
+
+/* Carousel Animations */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.carousel-items {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+}
+
+
+/* Hover Effects */
+
+.grid>div:hover {
+    transform: translateY(-10px);
+    transition: transform 0.3s ease;
+}
+
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .carousel-controls {
+        display: none;
+    }
+}
+
+
+/* Accessibility Improvements */
+
+:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+
+/* Print Styles */
+
+@media print {
+    .chatbot-container,
+    #carousel-controls {
+        display: none;
+    }
+}
+
+
+/* Custom Navbar Styles */
+
+
+/* Smooth Transitions */
+
+nav {
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* Link Hover Effects */
+
+nav a {
+    transition: background-color 0.2s, color 0.2s;
+}
+
+
+/* Mobile Menu Animations */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#mobile-menu {
+    animation: slideIn 0.3s ease-out;
+}
+
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    nav {
+        padding: 0.5rem;
+    }
+}
+
+
+/* Accessibility Improvements */
+
+nav a:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+
+/* Print Styles */
+
+@media print {
+    nav {
+        display: none;
+    }
+}
+
+
+/* Chatbot */
+
+
+/* Custom Chatbot Animations */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.chatbot-modal {
+    animation: slideUp 0.3s ease-out;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-toggle {
+    transition: all 0.3s ease;
+}
+
+.chatbot-toggle:hover {
+    animation: pulse 1s infinite;
+}
+
+
+/* Scrollbar Styling */
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* Chat Messages */
+
+.chatbot-messages div {
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.chatbot-messages div.user {
+    background: #dbeafe;
+    /* Lighter Blue for User */
+    margin-left: auto;
+    text-align: right;
+}
+
+.chatbot-messages div.assistant {
+    background: #f3f4f6;
+    /* Gray for AI */
+    margin-right: auto;
+    text-align: left;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 600px) {
+    #chatbot-modal {
+        width: 90%;
+        bottom: 10px;
+        right: 5%;
+    }
+}

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroLearn - Personalized Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="home.css" rel="stylesheet">
+    <style>
+        /* Custom Chatbot Animations */
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .chatbot-modal {
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chatbot-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-toggle:hover {
+            animation: pulse 1s infinite;
+        }
+        /* Scrollbar Styling */
+        
+        .chatbot-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen font-sans">
+    <!-- Navbar (from previous artifact) would be inserted here -->
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left Side: Logo and Name -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-10 w-10 rounded-full" src="../imgs/logo.png" alt="NeuroLearn Logo">
+                        <span class="ml-3 text-xl font-bold text-indigo-800">NeuroLearn</span>
+                    </div>
+                </div>
+
+                <!-- Center/Right: Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="../public/index.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Home
+                        </a>
+                        <a href="../adaptive-curriculum/adaptive.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Curricula
+                        </a>
+                        <a href="../xp-hub/xp.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            XP Hub
+                        </a>
+                        <a href="../av/av.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            AV Learning
+                        </a>
+                        <a href="../auth/auth.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Signup/Login
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span class="sr-only">Open main menu</span>
+                        <i id="menu-icon" class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../public/index.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    Home
+                </a>
+                <a href="../adaptive-curriculum/adaptive.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    Curricula
+                </a>
+                <a href="../xp-hub/xp.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    XP Hub
+                </a>
+                <a href="../av/av.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    AV Learning
+                </a>
+                <a href="../auth/auth.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    Signup/Login
+                </a>
+            </div>
+        </div>
+    </nav>
+    <br> <br>
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-4">
+                Empowering Neurodivergent Learners
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+                Personalized learning experiences tailored to individual neurodivergent needs.
+            </p>
+            <a href="../about/about.html" class="bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition-colors">
+                Get Started
+            </a>
+        </section>
+
+        <!-- Carousel Section -->
+        <section class="mb-16">
+            <div id="carousel" class="relative w-full max-w-4xl mx-auto">
+                <div class="carousel-items overflow-hidden relative">
+                    <div class="carousel-item absolute w-full transition-transform duration-500">
+                        <img src="/api/placeholder/1000/500" alt="Learning Journey" class="w-full rounded-lg shadow-lg">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl font-semibold">Personalized Learning Paths</h3>
+                            <p>Adaptive curriculum tailored to your unique learning style</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item absolute w-full transition-transform duration-500" style="transform: translateX(100%);">
+                        <img src="/api/placeholder/1000/500" alt="Interactive Learning" class="w-full rounded-lg shadow-lg">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl font-semibold">Interactive Modules</h3>
+                            <p>Engaging content that adapts to your progress</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item absolute w-full transition-transform duration-500" style="transform: translateX(200%);">
+                        <img src="/api/placeholder/1000/500" alt="Support Community" class="w-full rounded-lg shadow-lg">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                            <h3 class="text-2xl font-semibold">Supportive Community</h3>
+                            <p>Connect with peers and mentors who understand your journey</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute top-1/2 transform -translate-y-1/2 left-0 right-0 flex justify-between px-4">
+                    <button id="prevCarousel">
+                        
+                    </button>
+                    <button id="nextCarousel">
+                       
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid Menu Section -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-xl transition-shadow">
+                    <i class="fas fa-brain text-4xl text-indigo-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Adaptive Curriculum</h3>
+                    <p class="text-gray-600">Personalized learning paths that adapt to your unique needs</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-xl transition-shadow">
+                    <i class="fas fa-chart-line text-4xl text-green-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Progress Tracking</h3>
+                    <p class="text-gray-600">Detailed insights and analytics of your learning journey</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-xl transition-shadow">
+                    <i class="fas fa-users text-4xl text-purple-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Community Support</h3>
+                    <p class="text-gray-600">Connect with peers and mentors who understand you</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Updates Section -->
+        <!-- Updates Section -->
+        <!-- Updates Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-indigo-800">Neurodiversity Insights</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-2">Neurodiversity Research</h3>
+                    <p class="text-gray-600 mb-4">Breakthrough studies on neurodivergent learning strengths</p>
+                    <a href="https://www.nimh.nih.gov/health/topics/autism-spectrum-disorders-asd" target="_blank" class="text-indigo-600 hover:underline">Explore Findings</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-2">Inclusive Learning</h3>
+                    <p class="text-gray-600 mb-4">Join experts discussing support strategies for neurodivergent learners</p>
+                    <a href="https://www.s4nd.org/news/peer-support-groups/" target="_blank" class="text-indigo-600 hover:underline">Register Now</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-2">Assistive Tech Innovations</h3>
+                    <p class="text-gray-600 mb-4">Discover cutting-edge technologies supporting neurodivergent learning</p>
+                    <a href="https://www.microsoft.com/en-us/accessibility" target="_blank" class="text-indigo-600 hover:underline">Learn More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+        <!-- Chatbot Toggle Button -->
+        <button id="chatbot-toggle" class="chatbot-toggle bg-indigo-600 text-white p-4 rounded-full shadow-xl hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-400" aria-label="Open Chatbot">
+            <i class="fas fa-comment-dots text-xl"></i>
+        </button>
+
+        <!-- Chatbot Modal -->
+        <div id="chatbot-modal" class="chatbot-modal hidden fixed bottom-20 right-6 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden" aria-hidden="true">
+            <!-- Chatbot Header -->
+            <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
+                <h3 class="text-lg font-semibold flex items-center">
+                    <i class="fas fa-robot mr-2"></i> NeuroLearn Assistant
+                </h3>
+                <button id="chatbot-close" class="text-white hover:text-indigo-200 transition-colors" aria-label="Close Chatbot">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Chatbot Messages Area -->
+            <div id="chatbot-messages" class="chatbot-messages p-4 h-96 overflow-y-auto bg-gray-50">
+                <!-- Messages will be dynamically added here -->
+                <div class="text-center text-gray-500 mt-20">
+                    <i class="fas fa-comments text-4xl mb-4 text-indigo-400"></i>
+                    <p class="text-sm">Welcome to NeuroLearn Assistant!</p>
+                    <p class="text-xs mt-2">How can I help you today?</p>
+                </div>
+            </div>
+
+            <!-- Chatbot Input Area -->
+            <div class="p-4 bg-white border-t">
+                <div class="relative">
+                    <input type="text" id="chatbot-input" placeholder="Ask me anything..." class="w-full p-3 pl-4 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm">
+                    <button id="chatbot-send" type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-indigo-600 hover:text-indigo-800 focus:outline-none" aria-label="Send Message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">NeuroLearn</h4>
+                    <p class="text-gray-400">Empowering neurodivergent learners through personalized education.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul>
+                        <li><a href="../public/index.html" class="text-gray-300 hover:text-white">Home</a></li>
+                        <li><a href="../adaptive-curriculum/adaptive.html" class="text-gray-300 hover:text-white">Curricula</a></li>
+                        <li><a href="../xp-hub/xp.html" class="text-gray-300 hover:text-white">XP Hub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Help Center</a></li>
+                        <li><a href="mailto:anishka.2203@gmail.com" class="text-gray-300 hover:text-white">Contact Us</a></li>
+                        <li><a href="../about/about.html" class="text-gray-300 hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-gray-500">
+                © 2024 NeuroLearn. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

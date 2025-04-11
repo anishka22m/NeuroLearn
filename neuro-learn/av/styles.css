@@ -1,0 +1,47 @@
+/* Specific styles for Document Uploader */
+#fileInput {
+    transition: all 0.3s ease;
+}
+
+#fileInput:hover {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+#outputText {
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+
+#outputText:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Button Hover Animations */
+button {
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .flex-wrap > button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Accessibility Improvements */
+button:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .buttons-container {
+        display: none;
+    }
+}

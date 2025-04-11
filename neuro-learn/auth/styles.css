@@ -1,0 +1,125 @@
+/* Custom CSS for Authentication Page */
+
+/* Font Import (redundant with Google Fonts in HTML, but kept for completeness) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Login Toggle Animation */
+.login-active {
+    background-color: #6366f1;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Form Input Focus Effects */
+input:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
+}
+
+/* Social Login Button Hover Effects */
+.social-login-btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-login-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .max-w-md {
+        max-width: 100%;
+    }
+}
+
+/* Accessibility Improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .bg-white {
+        background: white !important;
+    }
+    
+    .shadow-2xl {
+        box-shadow: none;
+    }
+}
+
+/* Error and Validation Styles */
+.input-error {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.input-success {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+/* Subtle Animations */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.animate-pulse-subtle {
+    animation: pulse 2s ease-in-out infinite;
+}
