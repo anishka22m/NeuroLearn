@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroLearn - Document Uploader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="document-uploader.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen font-sans">
+    <!-- Navbar (from home page) -->
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left Side: Logo and Name -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-10 w-10 rounded-full" src="../imgs/logo.png" alt="NeuroLearn Logo">
+                        <span class="ml-3 text-xl font-bold text-indigo-800">NeuroLearn</span>
+                    </div>
+                </div>
+    
+                <!-- Center/Right: Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="../public/index.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Home
+                        </a>
+                        <a href="../adaptive-curriculum/adaptive.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Curricula
+                        </a>
+                        <a href="../xp-hub/xp.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            XP Hub
+                        </a>
+                        <a href="#" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            AV Learning
+                        </a>
+                        <a href="../auth/auth.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Signup/Login
+                        </a>
+                    </div>
+                </div>
+    
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span class="sr-only">Open main menu</span>
+                        <i id="menu-icon" class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="../public/index.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    Home
+                </a>
+                <a href="../adaptive-curriculum/adaptive.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    Curricula
+                </a>
+                <a href="../xp-hub/xp.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    XP Hub
+                </a>
+                <a href="../av/av.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    AV Learning
+                </a>
+                <a href="../auth/auth.html" class="text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 block px-3 py-2 rounded-md text-base font-medium">
+                    Signup/Login
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-24">
+        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-indigo-800">
+                <i class="fas fa-file-upload mr-3 text-indigo-600"></i>
+                Audio Visual Helper
+            </h2>
+            <p class="block text-gray-700 text-sm font-bold mb-2">Learn with Text to Speech and Speech to text</p>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="fileInput">
+                    Upload Document
+                </label>
+                <input 
+                    type="file" 
+                    id="fileInput" 
+                    accept=".txt,.pdf" 
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="outputText">
+                    Extracted Text
+                </label>
+                <textarea 
+                    id="outputText" 
+                    placeholder="Extracted text will appear here..." 
+                    class="w-full h-40 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500"
+                ></textarea>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button 
+                    onclick="textToSpeech()" 
+                    class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
+                >
+                    <i class="fas fa-play mr-2"></i> Play
+                </button>
+                <button 
+                    onclick="pauseSpeech()" 
+                    class="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 transition-colors flex items-center"
+                >
+                    <i class="fas fa-pause mr-2"></i> Pause
+                </button>
+                <button 
+                    onclick="resumeSpeech()" 
+                    class="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition-colors flex items-center"
+                >
+                    <i class="fas fa-play-circle mr-2"></i> Resume
+                </button>
+                <button 
+                    onclick="startSpeechToText()" 
+                    class="bg-purple-500 text-white px-6 py-2 rounded-md hover:bg-purple-600 transition-colors flex items-center"
+                >
+                    <i class="fas fa-microphone mr-2"></i> Speech to Text
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (from home page) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">NeuroLearn</h4>
+                    <p class="text-gray-400">Empowering neurodivergent learners through personalized education.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul>
+                        <li><a href="../public/index.html" class="text-gray-300 hover:text-white">Home</a></li>
+                        <li><a href="../adaptive-curriculum/adaptive.html" class="text-gray-300 hover:text-white">Curricula</a></li>
+                        <li><a href="../xp-hub/xp.html" class="text-gray-300 hover:text-white">XP Hub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Help Center</a></li>
+                        <li><a href="mailto:anishka.2203@gmail.com" class="text-gray-300 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-gray-500">
+                © 2024 NeuroLearn. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="av.js"></script>
+    <script src="../public/script.js"></script>
+</body>
+</html>
