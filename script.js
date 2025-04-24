@@ -55,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // OpenAI API Configuration
-        const OPENAI_API_KEY = 'sk-None-qZ8uEbDXBlvrP80FtpDHT3BlbkFJsPWcW9QeqcHcL8Sh5zxN'; // 🚨 Insecure, move to backend later
-        const OPENAI_API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
+        const GROQ_API_KEY = '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'; 
+        const GROQ_API_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 
-        async function sendMessageToOpenAI(message) {
-            if (!OPENAI_API_KEY) {
+        async function sendMessageToGroq(message) {
+            if (!GROQ_API_KEY) {
                 addMessage('API key is missing. Please configure it.', 'assistant');
                 return;
             }
@@ -67,14 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 addMessage('Thinking...', 'assistant');
 
-                const response = await fetch(OPENAI_API_ENDPOINT, {
+                const response = await fetch(GROQ_API_ENDPOINT, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: "gpt-3.5-turbo",
+                        model: "llama-3.3-70b-versatile",
                         messages: [{ role: "user", content: message }],
                         max_tokens: 150,
                         temperature: 0.7
@@ -83,7 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 chatbotMessages.lastChild.remove(); // ✅ Remove 'Thinking...' message
                 const data = await response.json();
-                addMessage(data.choices[0].message.content.trim(), 'assistant');
+                
+if (data.choices && data.choices.length > 0) {
+    addMessage(data.choices[0].message.content.trim(), 'assistant');
+} else if (data.error) {
+    addMessage(`Error from API: ${data.error.message}`, 'assistant');
+} else {
+    addMessage('Unexpected error occurred. Please try again later.', 'assistant');
+}
+
 
             } catch (error) {
                 chatbotMessages.lastChild.remove();
@@ -98,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessage(userMessage, 'user');
                 chatbotInput.value = '';
 
-                sendMessageToOpenAI(userMessage);
+                sendMessageToGroq(userMessage);
             }
         }
 
