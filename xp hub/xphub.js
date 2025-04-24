@@ -1,4 +1,4 @@
-// XP Hub Gamification Module
+// XP Hub Gamification Module 
 
 class XPHub {
     constructor() {
@@ -30,12 +30,14 @@ class XPHub {
 
         this.leaderboardData = [
             { name: "Alex M.", xp: 2350, streak: 18, isCurrentUser: false },
-            { name: "Sam K.", xp: 2100, streak: 15, isCurrentUser: false },
+            { name: "Sam K.", xp: 2000, streak: 14, isCurrentUser: false },
             { name: "You", xp: 1850, streak: 12, isCurrentUser: true },
             { name: "Jordan P.", xp: 1700, streak: 10, isCurrentUser: false },
             { name: "Riley S.", xp: 1500, streak: 8, isCurrentUser: false }
         ];
 
+        this.loadState(); // Load saved state from localStorage
+        this.checkChallengeReset(); // Check and reset challenges if needed
         this.initializeUI();
     }
 
@@ -70,7 +72,7 @@ class XPHub {
                         <span>${challenge.xpReward} XP</span>
                     </div>
                 </div>
-                <button data-challenge-index="${index}" class="challenge-btn mt-4 w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600 ${challenge.completed ? 'cursor-not-allowed' : ''}">
+                <button data-challenge-index="${index}" class="challenge-btn mt-4 w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600 ${challenge.completed ? 'cursor-not-allowed' : ''}" ${challenge.completed ? 'disabled' : ''}>
                     ${challenge.completed ? 'Completed' : 'Start Challenge'}
                 </button>
             `;
@@ -97,8 +99,15 @@ class XPHub {
         challenge.completed = true;
         this.coinBalance += challenge.coinReward;
         this.streakCount++;
+
+        // Update current user's XP in leaderboard
+        const user = this.leaderboardData.find(p => p.isCurrentUser);
+        if (user) user.xp += challenge.xpReward;
+
         this.updateCoinAndStreak();
         this.renderDailyChallenges();
+        this.renderLeaderboard();
+        this.saveState();
     }
 
     renderLeaderboard() {
@@ -119,6 +128,41 @@ class XPHub {
                 leaderboardBody.appendChild(row);
             });
     }
+
+    // Save current challenge states and rewards to localStorage
+    saveState() {
+        const state = {
+            dailyChallenges: this.dailyChallenges,
+            coinBalance: this.coinBalance,
+            streakCount: this.streakCount,
+            leaderboardData: this.leaderboardData,
+            lastResetDate: new Date().toDateString()
+        };
+        localStorage.setItem('xpHubState', JSON.stringify(state));
+    }
+
+    // Load saved state from localStorage if available
+    loadState() {
+        const saved = localStorage.getItem('xpHubState');
+        if (saved) {
+            const state = JSON.parse(saved);
+            this.dailyChallenges = state.dailyChallenges || this.dailyChallenges;
+            this.coinBalance = state.coinBalance;
+            this.streakCount = state.streakCount;
+            this.leaderboardData = state.leaderboardData || this.leaderboardData;
+            this.lastResetDate = state.lastResetDate;
+        }
+    }
+
+    // Reset challenges if it's a new day
+    checkChallengeReset() {
+        const today = new Date().toDateString();
+        if (this.lastResetDate !== today) {
+            this.dailyChallenges.forEach(ch => ch.completed = false);
+            this.lastResetDate = today;
+            this.saveState();
+        }
+    }
 }
 
 // Initialize XP Hub when the page loads
@@ -135,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Menu Toggle
     mobileMenuButton.addEventListener('click', () => {
         const isOpen = mobileMenu.classList.contains('hidden');
-        
+
         if (isOpen) {
             // Open menu
             mobileMenu.classList.remove('hidden');
@@ -150,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Active Page Highlighting
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('nav a');
-    
+
     navLinks.forEach(link => {
         if (link.getAttribute('href') === currentPath) {
             link.classList.add('text-indigo-700', 'bg-indigo-100');
