@@ -1,6 +1,6 @@
 // API Configuration and Syllabus Processing
-const API_KEY = "sk-None-qZ8uEbDXBlvrP80FtpDHT3BlbkFJsPWcW9QeqcHcL8Sh5zxN"; 
-const API_URL = "https://api.openai.com/v1/chat/completions";
+const GROQ_API_KEY = "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"; 
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 // Navbar Functionality
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,22 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
 
-    // Mobile Menu Toggle
     mobileMenuButton.addEventListener('click', () => {
         const isOpen = mobileMenu.classList.contains('hidden');
-        
         if (isOpen) {
-            // Open menu
             mobileMenu.classList.remove('hidden');
             menuIcon.classList.replace('fa-bars', 'fa-times');
         } else {
-            // Close menu
             mobileMenu.classList.add('hidden');
             menuIcon.classList.replace('fa-times', 'fa-bars');
         }
     });
 
-    // Scroll-based Navbar Styling
     window.addEventListener('scroll', () => {
         const nav = document.querySelector('nav');
         if (window.scrollY > 50) {
@@ -44,7 +39,6 @@ async function processSyllabus() {
     const syllabusFile = document.getElementById('syllabus').files[0];
     const progressElement = document.getElementById('progress');
 
-    // Reset progress element
     progressElement.innerHTML = '<i class="fas fa-spinner animate-spin mr-2"></i>Generating Study Plan...';
 
     if (!syllabusFile || !marks) {
@@ -65,21 +59,24 @@ async function processSyllabus() {
         }
     }
 
-    fetch(API_URL, {
+    fetch(GROQ_API_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`
+            'Authorization': `Bearer ${GROQ_API_KEY}`
         },
         body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [{
-                "role": "system",
-                "content": "You are an AI assistant that creates adaptive study plans based on syllabus, marks, and learning mode."
-            }, {
-                "role": "user",
-                "content": `Syllabus: ${syllabusText}\nMarks: ${marks}\nSubject: ${subject}\nMode: ${mode}`
-            }]
+            model: "llama-3.3-70b-versatile",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are an AI assistant that creates adaptive study plans based on syllabus, marks, and learning mode."
+                },
+                {
+                    role: "user",
+                    content: `Syllabus: ${syllabusText}\nMarks: ${marks}\nSubject: ${subject}\nMode: ${mode}`
+                }
+            ]
         })
     })
     .then(response => response.json())
